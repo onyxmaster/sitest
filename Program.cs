@@ -8,7 +8,11 @@ namespace sitest
     {
     }
 
-    class ImplOfNonGenericInterface : INonGenericInterface
+    class ImplOfNonGenericInterfaceA : INonGenericInterface
+    {
+    }
+
+    class ImplOfNonGenericInterfaceB : INonGenericInterface
     {
     }
 
@@ -16,6 +20,7 @@ namespace sitest
     {
         public NonGenericConsumerA(INonGenericInterface _)
         {
+            Console.WriteLine("{0} got {1}", nameof(NonGenericConsumerA), _.GetType().Name);
         }
     }
 
@@ -23,6 +28,7 @@ namespace sitest
     {
         public NonGenericConsumerB(INonGenericInterface _)
         {
+            Console.WriteLine("{0} got {1}", nameof(NonGenericConsumerA), _.GetType().Name);
         }
     }
 
@@ -30,7 +36,11 @@ namespace sitest
     {
     }
 
-    class ImplOfGenericInterface : IGenericInterface<object>
+    class ImplOfGenericInterfaceA : IGenericInterface<object>
+    {
+    }
+
+    class ImplOfGenericInterfaceB : IGenericInterface<object>
     {
     }
 
@@ -38,6 +48,7 @@ namespace sitest
     {
         public GenericConsumerA(IGenericInterface<object> _)
         {
+            Console.WriteLine("{0} got {1}", nameof(NonGenericConsumerA), _.GetType().Name);
         }
     }
 
@@ -45,6 +56,7 @@ namespace sitest
     {
         public GenericConsumerB(IGenericInterface<object> _)
         {
+            Console.WriteLine("{0} got {1}", nameof(NonGenericConsumerA), _.GetType().Name);
         }
     }
 
@@ -53,8 +65,8 @@ namespace sitest
         private static void NonGenericTest()
         {
             var container = new Container();
-            RegisterDependency<NonGenericConsumerA, INonGenericInterface>(container, () => new ImplOfNonGenericInterface());
-            RegisterDependency<NonGenericConsumerB, INonGenericInterface>(container, () => new ImplOfNonGenericInterface());
+            RegisterDependency<NonGenericConsumerA, INonGenericInterface>(container, () => new ImplOfNonGenericInterfaceA());
+            RegisterDependency<NonGenericConsumerB, INonGenericInterface>(container, () => new ImplOfNonGenericInterfaceB());
             container.GetInstance<NonGenericConsumerA>();
             container.GetInstance<NonGenericConsumerB>();
         }
@@ -62,8 +74,8 @@ namespace sitest
         private static void GenericTest()
         {
             var container = new Container();
-            RegisterDependency<GenericConsumerA, IGenericInterface<object>>(container, () => new ImplOfGenericInterface());
-            RegisterDependency<GenericConsumerB, IGenericInterface<object>>(container, () => new ImplOfGenericInterface());
+            RegisterDependency<GenericConsumerA, IGenericInterface<object>>(container, () => new ImplOfGenericInterfaceA());
+            RegisterDependency<GenericConsumerB, IGenericInterface<object>>(container, () => new ImplOfGenericInterfaceB());
             container.GetInstance<GenericConsumerA>();
             container.GetInstance<GenericConsumerB>();
         }
